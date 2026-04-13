@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mohammed Alrubaidi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f1f3d;
+      --navy-mid: #1b3a6b;
+      --accent: #2e6da4;
+      --accent-light: #4a8fc4;
+      --gold: #c9a84c;
+      --bg: #f7f5f0;
+      --bg-card: #ffffff;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --border: #e2ddd6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(247, 245, 240, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--navy);
+      letter-spacing: 0em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      gap: 4rem;
+      position: relative;
+    }
+    .hero-bg-shape {
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle at 60% 40%, rgba(46,109,164,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(46,109,164,0.1);
+      border: 1px solid rgba(46,109,164,0.25);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: 1.6rem;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(2.6rem, 4.2vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+    .hero-name span { color: var(--accent); }
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 2.4rem;
+      max-width: 440px;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 6px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--navy);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--navy-mid); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(15,31,61,0.2); }
+    .btn-outline {
+      background: transparent;
+      color: var(--navy);
+      border: 1.5px solid var(--navy);
+    }
+    .btn-outline:hover { background: var(--navy); color: #fff; transform: translateY(-1px); }
+
+    .hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+      position: relative;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--navy), var(--accent), var(--gold));
+      border-radius: 16px 16px 0 0;
+    }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .stat {
+      padding: 1.2rem;
+      background: var(--bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.02em;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; }
+    .hero-info { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    .info-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.7rem; font-size: 0.88rem; color: var(--muted); }
+    .info-row svg { flex-shrink: 0; }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 4rem; position: relative; }
+    section:nth-child(even) { background: var(--bg-card); }
+
+    .section-label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+      margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+    .section-title span { color: var(--accent); }
+
+    /* ── EXPERIENCE ── */
+    .timeline { position: relative; max-width: 820px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 12px; bottom: 12px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .tl-item {
+      padding-left: 2.2rem;
+      margin-bottom: 3rem;
+      position: relative;
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: fadeInLeft 0.5s ease forwards;
+    }
+    .tl-item:nth-child(1) { animation-delay: 0.1s; }
+    .tl-item:nth-child(2) { animation-delay: 0.2s; }
+    .tl-item:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes fadeInLeft { to { opacity:1; transform:translateX(0); } }
+
+    .tl-dot {
+      position: absolute;
+      left: -5px; top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg-card);
+      box-shadow: 0 0 0 3px rgba(46,109,164,0.2);
+    }
+    .tl-dates {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .tl-role {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.2rem;
+    }
+    .tl-org { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
+    .tl-bullets { list-style: none; }
+    .tl-bullets li {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.65;
+      margin-bottom: 0.5rem;
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    .tl-bullets li::before {
+      content: '▪';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.7rem;
+      top: 0.25rem;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .skill-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .skill-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .skill-card-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.82rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-weight: 400;
+    }
+
+    /* ── CERTIFICATIONS ── */
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+    .cert-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cert-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
+    .cert-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--navy), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+    .cert-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 0.3rem; }
+    .cert-issuer { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.6rem; }
+    .cert-desc { font-size: 0.84rem; color: var(--text); line-height: 1.6; }
+
+    /* ── EDUCATION ── */
+    .edu-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 700px;
+      position: relative;
+      overflow: hidden;
+    }
+    .edu-card::after {
+      content: 'GMU';
+      position: absolute;
+      right: -10px; top: -10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 6rem;
+      font-weight: 800;
+      color: rgba(46,109,164,0.05);
+      line-height: 1;
+    }
+    .edu-school { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; color: var(--navy); margin-bottom: 0.4rem; }
+    .edu-degree { font-size: 1rem; color: var(--accent); font-weight: 600; margin-bottom: 0.3rem; }
+    .edu-meta { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .gpa-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(135deg, var(--gold), #e8c06a);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+    }
+
+    /* ── PROJECTS ── */
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .project-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: rgba(46,109,164,0.12);
+      line-height: 1;
+      margin-bottom: 0.8rem;
+      letter-spacing: -0.03em;
+    }
+    .project-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; }
+    .project-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .project-tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      background: rgba(46,109,164,0.08);
+      border: 1px solid rgba(46,109,164,0.15);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    /* ── CONTACT ── */
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 900px;
+    }
+    .contact-text { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateX(4px); }
+    .contact-link-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: var(--bg-card);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+      section { padding: 4rem 1.5rem; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-card { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">MA</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-bg-shape"></div>
+  <div>
+    <div class="hero-badge">Open to Opportunities</div>
+    <h1 class="hero-name">Mohammed<br /><span>Alrubaidi</span></h1>
+    <p class="hero-sub">IT student at George Mason University with hands-on experience in Python, SQL, and data analysis. Bilingual in English & Arabic.</p>
+    <div class="hero-actions">
+      <a href="Mohammed_Alrubaidi_Resume_Final.docx" download class="btn btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Resume
+      </a>
+      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-num">3.8</div>
+        <div class="stat-label">GPA at GMU</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Certifications</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Students Taught</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Languages</div>
+      </div>
+    </div>
+    <div class="hero-info">
+      <div class="info-row">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Oakton, VA
+      </div>
+      <div class="info-row">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.96-.95a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>
+        202-604-3511
+      </div>
+      <div class="info-row">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        morubaidi06@gmail.com
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label reveal">Education</div>
+  <h2 class="section-title reveal">Academic <span>Background</span></h2>
+  <div class="edu-card reveal">
+    <div class="edu-school">George Mason University</div>
+    <div class="edu-degree">B.S. Information Technology</div>
+    <div class="edu-meta">Fairfax, VA &nbsp;·&nbsp; August 2024 – Present</div>
+    <div class="gpa-badge">⭐ GPA 3.8 / 4.0</div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label reveal">Work History</div>
+  <h2 class="section-title reveal">Professional <span>Experience</span></h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-dates">Oct 2024 – Present</div>
+      <div class="tl-role">Coding Instructor</div>
+      <div class="tl-org">Code Ninjas · Fairfax, VA</div>
+      <ul class="tl-bullets">
+        <li>Instructed 15+ students ages 5–14 in coding fundamentals through project-based learning, improving problem-solving and debugging skills.</li>
+        <li>Created engaging STEM activities that built student confidence and maintained a focused, positive classroom environment.</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-dates">Nov 2023 – Aug 2024</div>
+      <div class="tl-role">Front Desk Receptionist</div>
+      <div class="tl-org">Oakmont Recreation Center · Oakton, VA</div>
+      <ul class="tl-bullets">
+        <li>Processed payments, refunds, and account records for 100+ members daily while delivering responsive customer service.</li>
+        <li>Streamlined front-desk operations through organized filing and system updates, reducing administrative errors.</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-dates">Jun 2024</div>
+      <div class="tl-role">Program Operations Intern</div>
+      <div class="tl-org">ADAMS Center · Fairfax, VA</div>
+      <ul class="tl-bullets">
+        <li>Coordinated facility setup and logistics for youth programs, supporting structured and safe learning environments.</li>
+        <li>Collaborated with staff to prepare and run programming sessions, contributing to smooth event execution.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal">Capabilities</div>
+  <h2 class="section-title reveal">Skills &amp; <span>Tools</span></h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-card-title">Technical</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">Plotly</span>
+        <span class="tag">Jupyter</span>
+        <span class="tag">SQL</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">HTML</span>
+        <span class="tag">Microsoft Office</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-card-title">Languages</div>
+      <div class="skill-tags">
+        <span class="tag">English — Native</span>
+        <span class="tag">Arabic — Fluent</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-card-title">Soft Skills</div>
+      <div class="skill-tags">
+        <span class="tag">Communication</span>
+        <span class="tag">Problem-Solving</span>
+        <span class="tag">Customer Service</span>
+        <span class="tag">Teamwork</span>
+        <span class="tag">Cross-Cultural Collaboration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label reveal">Credentials</div>
+  <h2 class="section-title reveal">Certifi<span>cations</span></h2>
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <div class="cert-icon">🗄️</div>
+      <div>
+        <div class="cert-title">Querying Data with SQL</div>
+        <div class="cert-issuer">Intel · Global Career Accelerator · Jun 2025</div>
+        <div class="cert-desc">Applied SQL to extract, filter, and analyze large enterprise datasets in a real-world Intel business context.</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🐍</div>
+      <div>
+        <div class="cert-title">Python and Data Analysis</div>
+        <div class="cert-issuer">Recording Academy GRAMMY Awards · Global Career Accelerator</div>
+        <div class="cert-desc">Conducted professional-level analysis using Python and Jupyter Notebooks on real-world business datasets.</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🤖</div>
+      <div>
+        <div class="cert-title">AI Professional Skills</div>
+        <div class="cert-issuer">OpenAI · Global Career Accelerator</div>
+        <div class="cert-desc">Leveraged generative AI tools to streamline workflows and support data-driven decision-making.</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🌍</div>
+      <div>
+        <div class="cert-title">Intercultural Communication</div>
+        <div class="cert-issuer">Global Career Accelerator</div>
+        <div class="cert-desc">Built cross-cultural collaboration skills including bias awareness and conflict resolution for diverse teams.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label reveal">Academic Work</div>
+  <h2 class="section-title reveal">Featured <span>Projects</span></h2>
+  <div class="project-grid">
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <div class="project-title">Database Design & Management</div>
+      <div class="project-desc">Designed and queried relational databases in MySQL Workbench using normalization principles and complex JOIN operations to manage structured data efficiently.</div>
+      <div class="project-tags">
+        <span class="project-tag">MySQL</span>
+        <span class="project-tag">SQL</span>
+        <span class="project-tag">IT 214</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">02</div>
+      <div class="project-title">Revenue Trend Analysis</div>
+      <div class="project-desc">Cleaned and analyzed revenue datasets to surface monthly trends and peak business periods, delivering actionable insights through data visualization.</div>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">Pandas</span>
+        <span class="project-tag">GCA</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <div class="project-num">03</div>
+      <div class="project-title">Planetary Weather Pattern Modeling</div>
+      <div class="project-desc">Used Python with Pandas and Plotly to analyze planetary weather data and build predictive models for seasonal cycles.</div>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">Plotly</span>
+        <span class="project-tag">Data Science</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label reveal">Let's Connect</div>
+  <h2 class="section-title reveal">Get In <span>Touch</span></h2>
+  <div class="contact-wrap">
+    <div>
+      <p class="contact-text reveal">I'm actively looking for internships and entry-level opportunities in IT, data, or software. Feel free to reach out — I'd love to connect.</p>
+      <a href="mailto:morubaidi06@gmail.com" class="btn btn-primary reveal">✉ Send an Email</a>
+    </div>
+    <div class="contact-links reveal">
+      <a href="mailto:morubaidi06@gmail.com" class="contact-link">
+        <div class="contact-link-icon">✉</div>
+        morubaidi06@gmail.com
+      </a>
+      <a href="tel:2026043511" class="contact-link">
+        <div class="contact-link-icon">📞</div>
+        202-604-3511
+      </a>
+      <a href="https://linkedin.com" target="_blank" class="contact-link">
+        <div class="contact-link-icon">in</div>
+        LinkedIn Profile
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Mohammed Alrubaidi · Built with HTML & CSS · Hosted on GitHub Pages</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
